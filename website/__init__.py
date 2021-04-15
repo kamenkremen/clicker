@@ -57,4 +57,11 @@ def create_app():
         db_sess = create_session()
         return db_sess.query(users.User).get(user_id)
 
+    from .resources.users import UserResource, UserListResource
+    from .resources.upgrades import UpgradeResource, UpgradeListResource
+    api.add_resource(UserListResource, '/api/v1/users')
+    api.add_resource(UserResource, '/api/v1/users/<int:user_id>')
+    api.add_resource(UpgradeListResource, '/api/v1/upgrades')
+    api.add_resource(UpgradeResource, '/api/v1/upgrades/<int:upgrade_id>')
+
     return app

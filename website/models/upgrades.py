@@ -18,4 +18,4 @@ class Upgrade(database, SerializerMixin, UserMixin):
     requirements = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     requirements_amount = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
 
-    user = orm.relation('User')
+    user = orm.relation("User", back_populates='upgrades')
