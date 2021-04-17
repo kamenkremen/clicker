@@ -20,12 +20,12 @@ class User(database, UserMixin, SerializerMixin):
     experience = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     money_total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     experience_total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
-    upgrades = sqlalchemy.Column(sqlalchemy.String, default='')
     active_income = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     passive_income = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
 
-
-    upgrades = orm.relation("Upgrade", back_populates='user')
+    upgrades = orm.relation("Upgrade",
+                              secondary="association",
+                              backref="users")
 
     # def __repr__(self):
     #     return f'<Colonist> {self.id} {self.surname} {self.name}'
