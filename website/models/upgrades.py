@@ -6,6 +6,14 @@ from flask_login import UserMixin
 from .. import database
 
 
+association_table = sqlalchemy.Table(
+    'association', database.metadata,
+     sqlalchemy.Column('users', sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id')),
+     sqlalchemy.Column('upgrades', sqlalchemy.Integer,
+                       sqlalchemy.ForeignKey('upgrades.id'))
+)
+
+
 class Upgrade(database, SerializerMixin, UserMixin):
     __tablename__ = 'upgrades'
 
@@ -17,5 +25,3 @@ class Upgrade(database, SerializerMixin, UserMixin):
     passive_income = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     requirements = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     requirements_amount = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
-
-    user = orm.relation("User", back_populates='upgrades')

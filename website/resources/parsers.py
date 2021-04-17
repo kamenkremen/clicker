@@ -5,6 +5,7 @@ user_parser = reqparse.RequestParser()
 user_parser.add_argument('username', required=True)
 user_parser.add_argument('email', required=True)
 user_parser.add_argument('hashed_password', required=True)
+user_parser.add_argument('upgrades', default='')
 
 upgrade_parser = reqparse.RequestParser()
 upgrade_parser.add_argument('name', required=True)

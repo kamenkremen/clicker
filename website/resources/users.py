@@ -53,6 +53,9 @@ class UserListResource(Resource):
             email=args['email'],
             hashed_password=set_password(args['hashed_password'])
         )
+        id_upgrades = map(int, args['upgrades'].split(','))
+        for id_upgrade in id_upgrades:
+            user.upgrade.append(session.query(Upgrade).get(id_upgrade))
         session.add(user)
         session.commit()
         return jsonify({'success': 'OK'})

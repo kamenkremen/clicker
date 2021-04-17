@@ -9,7 +9,7 @@ from .. import create_session
 
 def abort_if_upgrade_not_found(upgrade_id):
     session = create_session()
-    upgrade = session.query(upgrade).get(upgrade_id)
+    upgrade = session.query(Upgrade).get(upgrade_id)
     if not upgrade:
         abort(404, message=f"Upgrade {upgrade_id} not found")
 

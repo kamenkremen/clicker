@@ -17,14 +17,15 @@ class User(database, UserMixin, SerializerMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     modifed_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
     money = sqlalchemy.Column(sqlalchemy.Integer, default=0)
-    upgrades = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("upgrades.id"))
     experience = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     money_total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     experience_total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     active_income = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     passive_income = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
 
-    upgrades = orm.relation('Upgrade')
+    upgrades = orm.relation("Upgrade",
+                              secondary="association",
+                              backref="users")
 
     # def __repr__(self):
     #     return f'<Colonist> {self.id} {self.surname} {self.name}'
