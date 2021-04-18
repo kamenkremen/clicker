@@ -17,7 +17,7 @@
     {% for user in users %}
       <tr class="my_row">
         <td class="ordinary" bgcolor="#eeeeff" align="center">{{ loop.index }}</td>
-        <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.name }}</td>
+        <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.username }}</td>
         <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.money }}</td>
         <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.experience }}</td>
         <td class="ordinary" bgcolor="#eeffee" align="center">{{ user.money + user.experience }}</td>

@@ -51,7 +51,7 @@ def create_app():
     from .clicker_blueprint import clicker_blueprint
     app.register_blueprint(clicker_blueprint)
 
-
+    from .models import users
     @login_manager.user_loader
     def load_user(user_id):
         db_sess = create_session()
