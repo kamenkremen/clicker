@@ -42,6 +42,12 @@ def reqister():
     return render_template('register.html', title='Регистрация', form=form)
 
 
+@clicker_blueprint.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/start_page')
+
+
 @clicker_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -54,3 +60,10 @@ def login():
             return redirect("/start_page")
         return render_template('login.html', message="Wrong login or password", form=form)
     return render_template('login.html', title='Authorization', form=form)
+
+
+@clicker_blueprint.route('/profile')
+def profile():
+    db_sess = create_session()
+    users = db_sess.query(User).all()
+    return render_template('profile.html', users=users, title='profile')    
