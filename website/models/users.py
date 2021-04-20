@@ -20,8 +20,10 @@ class User(database, UserMixin, SerializerMixin):
     experience = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     money_total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     experience_total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
-    active_income = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
-    passive_income = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+    active_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
+    active_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
+    passive_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+    passive_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
 
     upgrades = orm.relation("Upgrade",
                               secondary="association",
