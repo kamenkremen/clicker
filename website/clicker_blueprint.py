@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, request
 from flask import make_response, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_restful import abort
+from flask import session
 from . import create_session
 from .models.users import User
 from .models.upgrades import Upgrade
@@ -15,9 +16,19 @@ clicker_blueprint = flask.Blueprint('clicker_blueprint', __name__)
 
 @clicker_blueprint.route('/start_page')
 def start_page():
+    if current_user.is_authenticated:
+        clicks_count = session.get('clicks_count', 0)
+        return render_template('clicker.html', title='click', clicks_count=clicks_count)
     db_sess = create_session()
     users = db_sess.query(User).all()
     return render_template('leader_board.html', users=users, title='leader_board')
+
+
+@clicker_blueprint.route('/background_process_test')
+def background_process_test():
+    clicks_count = session.get('clicks_count', 0)
+    session['clicks_count'] = clicks_count + 1
+    return render_template('clicker.html', title='click', clicks_count=clicks_count)
 
 
 @clicker_blueprint.route('/register', methods=['GET', 'POST'])

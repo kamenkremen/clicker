@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+{% block content %}
+<!--
+<div class="col-sm-4">
+  <div class="thumbnail">
+      <a href="http://127.0.0.1:5000/start_page" class="">
+          <img src="static/img/billy.png" alt="..." class="">
+      </a>
+  </div>
+</div>
+-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+        $(function() {
+          $('a#test').bind('click', function() {
+            $.getJSON('/background_process_test',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+
+
+<div class='container'>
+    <form>
+        <a href=# id=test><button class='btn btn-default'>Test</button></a>
+    </form>
+
+</div>
+<p>{{ clicks_count }}</p>
+{% endblock %}
