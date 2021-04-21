@@ -10,16 +10,32 @@ from .models.upgrades import Upgrade
 from .templates import *
 from .forms.login import LoginForm
 from .forms.register import RegisterForm
+import datetime as dt
 
 clicker_blueprint = flask.Blueprint('clicker_blueprint', __name__)
 
 
+def do_passive_income(seconds):
+    db_sess = create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    user.money += user.passive_income_money * int(seconds)
+    user.money_total += user.passive_income_money * int(seconds)
+    user.experience += user.passive_income_exp * int(seconds)
+    user.experience_total += user.passive_income_exp * int(seconds)
+    db_sess.commit()
+
+
 @clicker_blueprint.route('/start_page')
 def start_page():
+    db_sess = create_session()
     if current_user.is_authenticated:
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        seconds = (dt.datetime.now() - user.last_time).seconds
+        do_passive_income(seconds)
+        user.last_time =dt.datetime.now()
+        db_sess.commit()
         clicks_count = session.get('clicks_count', 0)
         return render_template('clicker.html', title='click', clicks_count=clicks_count)
-    db_sess = create_session()
     users = db_sess.query(User).all()
     return render_template('leader_board.html', users=users, title='leader_board')
 
