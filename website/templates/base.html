@@ -29,10 +29,10 @@
         <h1>Кликер</h1>
         {% if current_user.is_authenticated %}
           <!-- a - ссылка -->
+          <a class="navbar-brand" href="/upgrades">Upgrades</a>
           <p align="center">
-            <a class="btn btn-success" href="/logout">Выйти</a>
-            <br>
-            <a class="btn btn-success" href="/profile">Профиль</a>
+            <a class="btn btn-dark" href="/profile">Профиль</a>
+            <a class="btn btn-danger" href="/logout">Выйти</a>
           </p>
         {% else %}
           <p align="center">

@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 import sqlalchemy.ext.declarative as dec
 from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_restful import Api
-import schedule
 
 
 database = dec.declarative_base()
@@ -50,7 +49,9 @@ def create_app():
     login_manager = LoginManager()
     login_manager.init_app(app)
     from .clicker_blueprint import clicker_blueprint
+    from .upgrade_blueprint import upgrade_blueprint
     app.register_blueprint(clicker_blueprint)
+    app.register_blueprint(upgrade_blueprint)
 
     from .models import users
     @login_manager.user_loader
