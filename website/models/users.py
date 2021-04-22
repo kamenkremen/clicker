@@ -15,15 +15,16 @@ class User(database, UserMixin, SerializerMixin):
     username = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    modifed_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
     money = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     experience = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     money_total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     experience_total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     active_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
     active_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
-    passive_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
-    passive_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
-    last_time = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
+    passive_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+    passive_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+
     upgrades = orm.relation("Upgrade",
                               secondary="association",
                               backref="users")
