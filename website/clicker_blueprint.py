@@ -19,6 +19,11 @@ def start_page():
     if current_user.is_authenticated:
         money_count = session.get('money_count', 0)
         exp_count = session.get('exp_count', 0)
+        db_sess = create_session()
+        user = db_sess.query(User).filter(User.id == current_user.id).first()
+        user.experience = exp_count
+        user.money = money_count
+        db_sess.commit()
         return render_template('clicker.html', title='click', money_count=money_count, exp_count=exp_count)
     db_sess = create_session()
     users = db_sess.query(User).all()
@@ -27,15 +32,15 @@ def start_page():
 
 @clicker_blueprint.route('/money_add')
 def money_add():
-    money_count = session.get('money_count', 0)
-    session['money_count'] = money_count + current_user.active_income_money
+    money_count = session.get('money_count', 0) + current_user.active_income_money
+    session['money_count'] = money_count
     return 'nothing'
 
 
 @clicker_blueprint.route('/exp_add')
 def exp_add():
-    exp_count = session.get('exp_count', 0)
-    session['exp_count'] = exp_count + current_user.active_income_exp
+    exp_count = session.get('exp_count', 0) + current_user.active_income_exp
+    session['exp_count'] = exp_count
     return 'nothing'
 
 
@@ -76,6 +81,8 @@ def login():
             User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
+            session['money_count'] = current_user.money
+            session['exp_count'] = current_user.experience
             return redirect("/start_page")
         return render_template('login.html', message="Wrong login or password", form=form)
     return render_template('login.html', title='Authorization', form=form)

@@ -16,6 +16,10 @@ upgrade_blueprint = flask.Blueprint('upgrade_blueprint', __name__)
 @upgrade_blueprint.route('/upgrades')
 def upgrades():
     db_sess = create_session()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    user.experience = session.get('exp_count', 0)
+    user.money = session.get('money_count', 0)
+    db_sess.commit()
     upgrades = db_sess.query(Upgrade).all()
     return render_template('upgrades.html', upgrades=upgrades, title='Upgrades')
 
