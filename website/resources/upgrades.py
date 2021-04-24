@@ -20,8 +20,8 @@ class UpgradeResource(Resource):
         session = create_session()
         upgrade = session.query(Upgrade).get(upgrade_id)
         return jsonify({'upgrades': upgrade.to_dict(
-            only=('name', 'money_price', 'experience_price', 'active_income', 'passive_income', 'requirements',
-                  'requirements_amount'))})
+            only=('name', 'money_price', 'experience_price', 'active_income_money', 'passive_income_money', 
+                  'active_income_exp', 'passive_income_exp','requirements'))})
 
     def delete(self, upgrade_id):
         abort_if_news_not_found(upgrade_id)

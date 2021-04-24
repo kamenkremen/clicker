@@ -21,8 +21,26 @@ def upgrades():
     user.money = session.get('money_count', 0)
     db_sess.commit()
     upgrades = db_sess.query(Upgrade).all()
-    return render_template('upgrades.html', upgrades=upgrades, title='Upgrades')
+    return render_template('upgrades.html', upgrades=upgrades, title='Upgrades', user=current_user)
 
+
+@upgrade_blueprint.route('/upgrade_buy/<upgrade_id>')
+def buy_upgrade(upgrade_id):
+    db_sess = create_session()
+    print(upgrade_id)
+    upgrade = db_sess.query(Upgrade).filter(Upgrade.id == upgrade_id).first()
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    if user.money < upgrade.money_price or user.experience < upgrade.experience_price:
+        return redirect('/upgrades')
+    user.active_income_money += upgrade.active_income_money
+    user.active_income_exp += upgrade.active_income_exp
+    user.passive_income_money += upgrade.passive_income_money
+    user.passive_income_exp += upgrade.passive_income_exp
+    user.money -= upgrade.money_price
+    user.experience -= upgrade.experience_price
+    user.upgrades.append(session.query(Upgrade).get(id_upgrade))
+    db_sess.commit()
+    return redirect('/upgrades')
 
 @upgrade_blueprint.route('/upgrades_add', methods=['GET', 'POST'])
 def upgrades_add():
@@ -36,10 +54,11 @@ def upgrades_add():
             name=form.name.data,
             money_price=form.money_price.data,
             experience_price=form.experience_price.data,
-            active_income=form.active_income.data,
-            passive_income=form.passive_income.data,
+            active_income_money=form.active_income_money.data,
+            passive_income_money=form.passive_income_money.data,
+            active_income_exp=form.active_income_money.data,
+            passive_income_exp=form.passive_income_exp.data,
             requirements=form.requirements.data,
-            requirements_amount=form.requirements_amount.data,
         )
         db_sess.add(upgrade)
         db_sess.commit()

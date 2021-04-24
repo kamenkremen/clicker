@@ -38,18 +38,36 @@
     {% endfor %}
     </p>
     <p>
-        {{ form.active_income.label }}<br>
-        {{ form.active_income(class="form-control") }}<br>
-        {% for error in form.active_income.errors %}
+        {{ form.active_income_money.label }}<br>
+        {{ form.active_income_money(class="form-control") }}<br>
+        {% for error in form.active_income_money.errors %}
     <p class="alert alert-danger" role="alert">
         {{ error }}
     </p>
     {% endfor %}
     </p>
     <p>
-        {{ form.passive_income.label }}<br>
-        {{ form.passive_income(class="form-control") }}<br>
-        {% for error in form.passive_income.errors %}
+        {{ form.active_income_exp.label }}<br>
+        {{ form.active_income_exp(class="form-control") }}<br>
+        {% for error in form.active_income_exp.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.passive_income_money.label }}<br>
+        {{ form.passive_income_money(class="form-control") }}<br>
+        {% for error in form.passive_income_money.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.passive_income_exp.label }}<br>
+        {{ form.passive_income_exp(class="form-control") }}<br>
+        {% for error in form.passive_income_exp.errors %}
     <p class="alert alert-danger" role="alert">
         {{ error }}
     </p>
@@ -59,15 +77,6 @@
         {{ form.requirements.label }}<br>
         {{ form.requirements(class="form-control") }}<br>
         {% for error in form.requirements.errors %}
-    <p class="alert alert-danger" role="alert">
-        {{ error }}
-    </p>
-    {% endfor %}
-    </p>
-    <p>
-        {{ form.requirements_amount.label }}<br>
-        {{ form.requirements_amount(class="form-control") }}<br>
-        {% for error in form.requirements_amount.errors %}
     <p class="alert alert-danger" role="alert">
         {{ error }}
     </p>
