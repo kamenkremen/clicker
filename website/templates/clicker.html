@@ -40,16 +40,11 @@
 
 
 
-<p>
-<form>
-  <a href=# id=money><button class='btn btn-default'>Money</button></a>
-</form>
-{{ money_count }}
-</p>
-<p>
-<form>
-  <a href=# id=exp><button class='btn btn-default'>Expirience</button></a>
-</form>
-{{ exp_count }}
-</p>
+<nav>
+  <a href=# id=money><img src="static/img/money.gif" alt="альтернативный текст"></a>
+  <a href=# id=exp><img src="static/img/exp.gif" alt="альтернативный текст"></a>
+</nav>
+<nav>
+  {{ current_user.money }} {{ current_user.experience }}
+</nav>
 {% endblock %}

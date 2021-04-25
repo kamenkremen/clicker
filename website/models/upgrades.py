@@ -8,9 +8,9 @@ from .. import database
 
 association_table = sqlalchemy.Table(
     'association', database.metadata,
-     sqlalchemy.Column('users', sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id')),
-     sqlalchemy.Column('upgrades', sqlalchemy.Integer,
-                       sqlalchemy.ForeignKey('upgrades.id'))
+    sqlalchemy.Column('users', sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id')),
+    sqlalchemy.Column('upgrades', sqlalchemy.Integer,
+                      sqlalchemy.ForeignKey('upgrades.id'))
 )
 
 
@@ -21,7 +21,8 @@ class Upgrade(database, SerializerMixin, UserMixin):
     name = sqlalchemy.Column(sqlalchemy.String)
     money_price = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     experience_price = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
-    active_income = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
-    passive_income = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+    active_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+    passive_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+    active_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+    passive_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     requirements = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
-    requirements_amount = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)

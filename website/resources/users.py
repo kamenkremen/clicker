@@ -26,8 +26,8 @@ class UserResource(Resource):
         session = create_session()
         user = session.query(User).get(user_id)
         return jsonify({'users': user.to_dict(
-            only=('name', 'email', 'modifed_date', 'money', 'experience', 'money_total',
-                  'experience_total', 'active_income', 'passive_income', 'hashed_password'))})
+            only=('name', 'email', 'money', 'experience', 'money_total',
+                  'experience_total', 'active_income', 'passive_income', 'hashed_password', 'last_time'))})
 
     def delete(self, user_id):
         abort_if_news_not_found(user_id)

@@ -36,6 +36,7 @@ def upgrades():
     db_sess = create_session()
     income_update()
     do_passive_income()
+    db_sess.merge(current_user)
     db_sess.commit()
     upgrades = db_sess.query(Upgrade).all()
     return render_template('upgrades.html', upgrades=upgrades, title='Upgrades', user=current_user)

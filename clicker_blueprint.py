@@ -103,7 +103,9 @@ def login():
 
 @clicker_blueprint.route('/profile')
 def profile():
-    do_passive_income()
     db_sess = create_session()
+    do_passive_income()
+    db_sess.merge(current_user)
+    db_sess.commit()
     user = db_sess.query(User).filter(User.id == current_user.id).first()
     return render_template('profile.html', user=user, title='profile')    
