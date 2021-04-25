@@ -49,12 +49,23 @@ def create_app():
     login_manager = LoginManager()
     login_manager.init_app(app)
     from .clicker_blueprint import clicker_blueprint
+    from .upgrade_blueprint import upgrade_blueprint
+    from .authorization_blueprint import authorization_blueprint
     app.register_blueprint(clicker_blueprint)
+    app.register_blueprint(upgrade_blueprint)
+    app.register_blueprint(authorization_blueprint)
 
-
+    from .models import users
     @login_manager.user_loader
     def load_user(user_id):
         db_sess = create_session()
         return db_sess.query(users.User).get(user_id)
+
+    from .resources.users import UserResource, UserListResource
+    from .resources.upgrades import UpgradeResource, UpgradeListResource
+    api.add_resource(UserListResource, '/api/v1/users')
+    api.add_resource(UserResource, '/api/v1/users/<int:user_id>')
+    api.add_resource(UpgradeListResource, '/api/v1/upgrades')
+    api.add_resource(UpgradeResource, '/api/v1/upgrades/<int:upgrade_id>')
 
     return app

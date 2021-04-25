@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+{% block content %}
+<div class="table_container">
+  <table class="my_table" align="center">
+    <tr class="my_row">
+      <td class="title" width="50px" bgcolor="#dddddd">Место</td>
+      <td class="title" width="150px" bgcolor="#dddddd">Никнейм</td>
+      <td class="title" width="100px" bgcolor="#dddddd" align="center">Деньги</td>
+      <td class="title" width="100px" bgcolor="#dddddd" align="center">Опыт</td>
+      <td class="title" width="100px" bgcolor="#dddddd" align="center">Общий счёт</td>
+    </tr>
+  {% for user in users %}
+    <tr class="my_row">
+      <td class="ordinary" bgcolor="#eeeeff" align="center">{{ loop.index }}</td>
+      <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.username }}</td>
+      <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.money }}</td>
+      <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.experience }}</td>
+      <td class="ordinary" bgcolor="#eeffee" align="center">{{ user.total }}</td>
+    </tr>
+  {% endfor %}
+  </table>
+</div>
+<br>
+
+{% endblock %}

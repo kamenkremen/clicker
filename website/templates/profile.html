@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+
+{% block content %}
+  <div class="table_container">
+    <table class="my_table" align="left">
+      <tr class="my_row">
+        <td class="title" width="100px" bgcolor="#dddddd" align="center">Имя пользователя</td>
+        <td class="title" width="100px" bgcolor="#dddddd" align="center">Деньги</td>
+        <td class="title" width="100px" bgcolor="#dddddd" align="center">Всего денег добыто</td>
+        <td class="title" width="100px" bgcolor="#dddddd" align="center">Опыт</td>
+        <td class="title" width="100px" bgcolor="#dddddd" align="center">Всего опыта добыто</td>
+        <td class="title" width="100px" bgcolor="#dddddd" align="center">Пассивный доход денег</td>
+        <td class="title" width="100px" bgcolor="#dddddd" align="center">Пассивный доход опыта</td>
+        <td class="title" width="100px" bgcolor="#dddddd" align="center">Общий счёт</td>
+      </tr>
+      <tr class="my_row">
+        <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.username }}</td>
+        <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.money }}</td>
+        <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.money_total }}</td>
+        <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.experience }}</td>
+        <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.experience_total }}</td>
+        <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.passive_income_money }}</td>
+        <td class="ordinary" bgcolor="#eeeeff" align="center">{{ user.passive_income_exp }}</td>
+        <td class="ordinary" bgcolor="#eeffee" align="center">{{ user.total }}</td>
+      </tr>
+    </table>
+  </div>
+  <div align='right'>
+    {% if current_user.id == user.id %}
+      <a class="btn btn-dark" href="/find_user">Найти пользователей</a>
+    {% endif %}
+  </div>
+  <br>
+{% endblock %}
