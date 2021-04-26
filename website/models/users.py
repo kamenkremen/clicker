@@ -21,8 +21,8 @@ class User(database, UserMixin, SerializerMixin):
     experience_total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     active_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
     active_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
-    passive_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
-    passive_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=1)
+    passive_income_money = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+    passive_income_exp = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
     total = sqlalchemy.Column(sqlalchemy.Integer, default=0)
     last_time = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
 
