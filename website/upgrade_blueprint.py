@@ -9,16 +9,34 @@ from .models.users import User
 from .models.upgrades import Upgrade
 from .templates import *
 from .forms.upgrades_add import UpgradeAddForm
+import datetime as dt
 
 upgrade_blueprint = flask.Blueprint('upgrade_blueprint', __name__)
+
+
+def do_passive_income_fo_current_user():
+    seconds = (dt.datetime.now() - current_user.last_time).seconds
+    current_user.money += current_user.passive_income_money * int(seconds)
+    current_user.money_total += current_user.passive_income_money * int(seconds)
+    current_user.experience += current_user.passive_income_exp * int(seconds)
+    current_user.experience_total += current_user.passive_income_exp * int(seconds)
+    current_user.total = current_user.experience_total + current_user.money_total
+    current_user.last_time = dt.datetime.now()
+
+
+def income_update():
+    current_user.experience += session.get('exp_count', 0)
+    current_user.money += session.get('money_count', 0)
+    session['money_count'] = 0
+    session['exp_count'] = 0
 
 
 @upgrade_blueprint.route('/upgrades')
 def upgrades():
     db_sess = create_session()
-    user = db_sess.query(User).filter(User.id == current_user.id).first()
-    user.experience = session.get('exp_count', 0)
-    user.money = session.get('money_count', 0)
+    income_update()
+    do_passive_income_fo_current_user()
+    db_sess.merge(current_user)
     db_sess.commit()
     upgrades = db_sess.query(Upgrade).all()
     return render_template('upgrades.html', upgrades=upgrades, title='Upgrades', user=current_user)
@@ -27,7 +45,7 @@ def upgrades():
 @upgrade_blueprint.route('/upgrade_buy/<upgrade_id>')
 def buy_upgrade(upgrade_id):
     db_sess = create_session()
-    print(upgrade_id)
+    # print(upgrade_id)
     upgrade = db_sess.query(Upgrade).filter(Upgrade.id == upgrade_id).first()
     user = db_sess.query(User).filter(User.id == current_user.id).first()
     if user.money < upgrade.money_price or user.experience < upgrade.experience_price:
@@ -38,7 +56,7 @@ def buy_upgrade(upgrade_id):
     user.passive_income_exp += upgrade.passive_income_exp
     user.money -= upgrade.money_price
     user.experience -= upgrade.experience_price
-    user.upgrades.append(session.query(Upgrade).get(id_upgrade))
+    user.upgrades.append(db_sess.query(Upgrade).get(upgrade.id))
     db_sess.commit()
     return redirect('/upgrades')
 

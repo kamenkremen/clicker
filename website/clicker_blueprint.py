@@ -8,41 +8,51 @@ from . import create_session
 from .models.users import User
 from .models.upgrades import Upgrade
 from .templates import *
-from .forms.login import LoginForm
-from .forms.register import RegisterForm
+from .forms.search import SearchForm
 import datetime as dt
 
 clicker_blueprint = flask.Blueprint('clicker_blueprint', __name__)
 
 
-def do_passive_income(seconds):
+def do_passive_income(user_id):
     db_sess = create_session()
-    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    user = db_sess.query(User).filter(User.id == user_id).first()
+    seconds = (dt.datetime.now() - user.last_time).seconds
     user.money += user.passive_income_money * int(seconds)
     user.money_total += user.passive_income_money * int(seconds)
     user.experience += user.passive_income_exp * int(seconds)
     user.experience_total += user.passive_income_exp * int(seconds)
     user.total = user.experience_total + user.money_total
+    user.last_time = dt.datetime.now()
     db_sess.commit()
+
+
+def do_passive_income_fo_current_user():
+    seconds = (dt.datetime.now() - current_user.last_time).seconds
+    current_user.money += current_user.passive_income_money * int(seconds)
+    current_user.money_total += current_user.passive_income_money * int(seconds)
+    current_user.experience += current_user.passive_income_exp * int(seconds)
+    current_user.experience_total += current_user.passive_income_exp * int(seconds)
+    current_user.total = current_user.experience_total + current_user.money_total
+    current_user.last_time = dt.datetime.now()
+
+
+def income_update():
+    current_user.experience += session.get('exp_count', 0)
+    current_user.money += session.get('money_count', 0)
+    session['money_count'] = 0
+    session['exp_count'] = 0
 
 
 @clicker_blueprint.route('/start_page')
 def start_page():
     db_sess = create_session()
     if current_user.is_authenticated:
-        user = db_sess.query(User).filter(User.id == current_user.id).first()
-        seconds = (dt.datetime.now() - user.last_time).seconds
-        do_passive_income(seconds)
-        user.last_time =dt.datetime.now()
+        do_passive_income_fo_current_user()
+        income_update()
+        db_sess.merge(current_user)
         db_sess.commit()
-        money_count = session.get('money_count', 0)
-        exp_count = session.get('exp_count', 0)
-        db_sess = create_session()
-        user = db_sess.query(User).filter(User.id == current_user.id).first()
-        user.experience = exp_count
-        user.money = money_count
-        db_sess.commit()
-        return render_template('clicker.html', title='click', money_count=money_count, exp_count=exp_count)
+        return render_template('clicker.html', title='click')
     db_sess = create_session()
     users = db_sess.query(User).order_by(User.total.desc()).limit(100).all()
     return render_template('leader_board.html', users=users, title='leader_board')
@@ -50,69 +60,45 @@ def start_page():
 
 @clicker_blueprint.route('/money_add')
 def money_add():
-    money_count = session.get('money_count', 0) + current_user.active_income_money
-    session['money_count'] = money_count
+    session['money_count'] += current_user.active_income_money
     return 'nothing'
 
 
 @clicker_blueprint.route('/exp_add')
 def exp_add():
-    exp_count = session.get('exp_count', 0) + current_user.active_income_exp
-    session['exp_count'] = exp_count
+    session['exp_count'] += current_user.active_income_exp
     return 'nothing'
 
 
-@clicker_blueprint.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        if form.password.data != form.password_again.data:
-            return render_template('register.html', title='Register', form=form,
-                                   message="Passwords don't match")
-        db_sess = create_session()
-        if db_sess.query(User).filter(User.email == form.email.data).first():
-            return render_template('register.html', title='Register', form=form,
-                                   message="This user already exists")
-        user = User(
-            username=form.username.data,
-            email=form.email.data,
-        )
-        user.set_password(form.password.data)
-        db_sess.add(user)
-        db_sess.commit()
+@clicker_blueprint.route('/profile/<user_id>')
+def profile(user_id):
+    if not current_user.is_authenticated:
         return redirect('/login')
-    return render_template('register.html', title='Регистрация', form=form)
-
-
-@clicker_blueprint.route('/logout')
-def logout():
-    logout_user()
-    return redirect('/start_page')
-
-
-@clicker_blueprint.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        db_sess = create_session()
-        user = db_sess.query(User).filter(
-            User.email == form.email.data).first()
-        if user and user.check_password(form.password.data):
-            login_user(user, remember=form.remember_me.data)
-            session['money_count'] = current_user.money
-            session['exp_count'] = current_user.experience
-            return redirect("/start_page")
-        return render_template('login.html', message="Wrong login or password", form=form)
-    return render_template('login.html', title='Authorization', form=form)
-
-
-@clicker_blueprint.route('/profile')
-def profile():
     db_sess = create_session()
-    user = db_sess.query(User).filter(User.id == current_user.id).first()
-    seconds = (dt.datetime.now() - user.last_time).seconds
-    do_passive_income(seconds)
-    user.last_time =dt.datetime.now()
+    user = db_sess.query(User).filter(User.id == user_id).first()
+    do_passive_income(user_id)
     db_sess.commit()
-    user = db_sess.query(User).filter(User.id == current_user.id).first()
-    return render_template('profile.html', user=user, title='profile')    
+    return render_template('profile.html', user=user, title='profile')
+
+
+@clicker_blueprint.route('/find_user', methods=['GET', 'POST'])
+def find_user():
+    if not current_user.is_authenticated:
+        return redirect('/login')
+    db_sess = create_session()
+    form = SearchForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        users = db_sess.query(User).filter(User.username.like(f'%{username}%')).all()
+    else:
+        users = db_sess.query(User).all()
+    return render_template('find_users.html', users=users, form=form)
+
+
+# @clicker_blueprint.route('/add_friend/<user_id>')
+# def add_friend(user_id):
+#     db_sess = create_session()
+#     user = db_sess.query(User).filter(User.id == current_user.id).first()
+#     user.friends.append(db_sess.query(User).get(user_id))
+#     db_sess.commit()
+#     return redirect('/start_page')

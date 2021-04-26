@@ -9,4 +9,4 @@ from .. import database
 class Connect(database, SerializerMixin, UserMixin):
     __tablename__ = 'connections'
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id'))
-    upgrade_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('upgrades.id'))
+    user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('upgrades.id'))

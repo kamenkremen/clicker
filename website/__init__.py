@@ -50,8 +50,10 @@ def create_app():
     login_manager.init_app(app)
     from .clicker_blueprint import clicker_blueprint
     from .upgrade_blueprint import upgrade_blueprint
+    from .authorization_blueprint import authorization_blueprint
     app.register_blueprint(clicker_blueprint)
     app.register_blueprint(upgrade_blueprint)
+    app.register_blueprint(authorization_blueprint)
 
     from .models import users
     @login_manager.user_loader

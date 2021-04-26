@@ -30,6 +30,7 @@ class User(database, UserMixin, SerializerMixin):
                               secondary="association",
                               backref="users")
 
+
     # def __repr__(self):
     #     return f'<Colonist> {self.id} {self.surname} {self.name}'
 

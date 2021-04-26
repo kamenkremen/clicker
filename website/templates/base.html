@@ -26,12 +26,12 @@
       <!-- все эти классы взяты из стилевика bootstrap, на сайте можно посмотреть описание -->
       <!-- nav - navigation bar -->
       <nav class="navbar navbar-light bg-light">
-        <h1>Кликер</h1>
+        <a class="navbar-brand" href="/start_page">Кликер</a>
         {% if current_user.is_authenticated %}
           <!-- a - ссылка -->
-          <a class="navbar-brand" href="/upgrades">Upgrades</a>
+          <a class="navbar-brand" href="/upgrades">Улучшения</a>
           <p align="center">
-            <a class="btn btn-dark" href="/profile">Профиль</a>
+            <a class="btn btn-dark" href="/profile/{{ current_user.id }}">Профиль</a>
             <a class="btn btn-danger" href="/logout">Выйти</a>
           </p>
         {% else %}
