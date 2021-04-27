@@ -2,3 +2,4 @@ flask
 sqlalchemy
 flask-login
 flask-restful
+flask-sqlalchemy
