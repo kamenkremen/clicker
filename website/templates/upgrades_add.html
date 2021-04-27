@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+{% block content %}
+<h1>Добавить улучшение</h1>
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+    <p>
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control") }}<br>
+        {% for error in form.name.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.money_price.label }}<br>
+        {{ form.money_price(class="form-control") }}<br>
+        {% for error in form.money_price.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.experience_price.label }}<br>
+        {{ form.experience_price(class="form-control") }}<br>
+        {% for error in form.experience_price.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.active_income_money.label }}<br>
+        {{ form.active_income_money(class="form-control") }}<br>
+        {% for error in form.active_income_money.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.active_income_exp.label }}<br>
+        {{ form.active_income_exp(class="form-control") }}<br>
+        {% for error in form.active_income_exp.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.passive_income_money.label }}<br>
+        {{ form.passive_income_money(class="form-control") }}<br>
+        {% for error in form.passive_income_money.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.passive_income_exp.label }}<br>
+        {{ form.passive_income_exp(class="form-control") }}<br>
+        {% for error in form.passive_income_exp.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.requirements.label }}<br>
+        {{ form.requirements(class="form-control") }}<br>
+        {% for error in form.requirements.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+</form>
+{% endblock %}

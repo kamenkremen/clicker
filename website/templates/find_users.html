@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+    <p>
+        {{ form.username.label }}<br>
+        {{ form.username(class="form-control") }}<br>
+        {% for error in form.username.errors %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+<div class="table_container">
+  {% for user in users %}
+    <a href="/profile/{{ user.id }}">{{ user.username }}</a><br>
+  {% endfor %}
+</div>
+<br>
+
+{% endblock %}

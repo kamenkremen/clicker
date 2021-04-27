@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+{% block content %}
+<!--
+<div class="col-sm-4">
+  <div class="thumbnail">
+      <a href="http://127.0.0.1:5000/start_page" class="">
+          <img src="static/img/billy.png" alt="..." class="">
+      </a>
+  </div>
+</div>
+-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+        $(function() {
+          $('a#money').bind('click', function() {
+            $.getJSON('/money_add',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<script type=text/javascript>
+        $(function() {
+          $('a#exp').bind('click', function() {
+            $.getJSON('/exp_add',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+
+
+
+<nav>
+  <a href=# id=money><img src="static/img/money.gif" alt="альтернативный текст"></a>
+  <a href=# id=exp><img src="static/img/exp.gif" alt="альтернативный текст"></a>
+</nav>
+<nav>
+  {{ current_user.money }} {{ current_user.experience }}
+</nav>
+{% endblock %}

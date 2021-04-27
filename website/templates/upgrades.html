@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+{% block content %}
+{% if user.id == 1 or user.id == 2 %}
+  <a class="btn btn-success" href="/upgrades_add">Добавить апгрейд</a>
+{% endif %}
+{% for upgrade in upgrades %}
+  <p>
+    {% if upgrade.requirements <= (user.money_total + user.experience_total) %}
+      <div>
+        <h3>{{ upgrade.name }}</h3>
+        <h4>Стоимость в деньгах {{ upgrade.money_price }}</h4>
+        <h4>Стоимость в опыте {{ upgrade.experience_price }}</h4>
+        <h4>Активный доход денег {{ upgrade.active_income_money }}</h4>
+        <h4>Активный доход опыта {{ upgrade.active_income_exp }}</h4>
+        <h4>Пассивный доход денег {{ upgrade.passive_income_money }}</h4>
+        <h4>Пассивный доход опыта {{ upgrade.passive_income_exp }}</h4>
+        <a class="btn btn-success" href="/upgrade_buy/{{ upgrade.id }}">Купить апгрейд</a>
+      </div>
+    {% endif %}
+  </p>
+{% endfor %}
+<br>
+
+{% endblock %}
