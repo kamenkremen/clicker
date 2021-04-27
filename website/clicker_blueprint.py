@@ -46,7 +46,7 @@ def income_update():
     session['money_count'] = 0
     session['exp_count'] = 0
 
-
+@clicker_blueprint.route('/')
 @clicker_blueprint.route('/start_page')
 def start_page():
     db_sess = create_session()
