@@ -27,6 +27,9 @@ def do_passive_income_fo_current_user():
 def income_update():
     current_user.experience += session.get('exp_count', 0)
     current_user.money += session.get('money_count', 0)
+    current_user.money_total += session.get('money_count', 0)
+    current_user.experience_total += session.get('exp_count', 0)
+    current_user.total = current_user.experience_total + current_user.money_total
     session['money_count'] = 0
     session['exp_count'] = 0
 
